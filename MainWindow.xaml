@@ -5,23 +5,27 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Notepad"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" WindowStartupLocation="CenterScreen">
-    <Grid>
+        Title="MainWindow" Background="DarkGray" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+    <Grid Background="DarkGray"  Margin="1 1 1 1">
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition Width="200"></ColumnDefinition>
+            <ColumnDefinition Width="160"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
             <RowDefinition Height="20"></RowDefinition>
         </Grid.RowDefinitions>
-        <DataGrid 
+        <DataGrid
+            Margin="1 1 1 1"
+            BorderThickness="0 0 0 0"
+            BorderBrush="Transparent"
+            MouseUp="grid_MouseUp"
             Loaded="grid_Loaded"
             Background="LightGray"
             Grid.Row="0" 
             Grid.Column="0"
-            Grid.RowSpan="2"
+            Grid.RowSpan="1"
             VerticalScrollBarVisibility="Auto"
             x:Name="ListSomeText" 
             FontSize="14" 
@@ -41,8 +45,8 @@
                 </DataGridTextColumn>
                 <DataGridTemplateColumn 
                     x:Name="SomeText"
-                    IsReadOnly="True" 
-                    Header="Заметки"
+                    IsReadOnly="False" 
+                    Header="Описание"
                     Width="*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -61,17 +65,66 @@
                     Binding="{Binding Date}"  
                     IsReadOnly="True" 
                     Header="Дата" 
-                    Width="150"
+                    Width="180"
                     FontFamily="Segoe UI">
                 </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
+        <Grid 
+            Margin="1 1 1 1"
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Background="LightGray"
+            >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="200"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Label 
+                Background="AliceBlue"
+                FontFamily="Segoe UI"
+                x:Name="idEdit"
+                Grid.Column="0"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Width="30"
+                Margin="0 -1 1 1"
+                FontSize="14">
+            </Label>
+            <TextBox
+                BorderThickness="0 0 0 0"
+                Margin="0 -1 0 1"
+                BorderBrush="Transparent"
+                Background="AliceBlue"
+                FontFamily="Segoe UI"
+                TextWrapping="Wrap"
+                x:Name="TextEdit"
+                Grid.Column="1"
+                HorizontalContentAlignment="Left"
+                VerticalContentAlignment="Center"
+                FontSize="14">
+            </TextBox>
+            <Label
+                Background="AliceBlue"
+                FontFamily="Segoe UI"
+                x:Name="DateEdit"
+                Grid.Column="2"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Margin="1 -1 1 1"
+                FontSize="14">
+            </Label>
+        </Grid>
         <StackPanel
+            Margin="0 1 1 1"
             Grid.Row="0"
             Grid.Column="2"
-            Grid.RowSpan="2"
+            Grid.RowSpan="1"
             Background="LightGray">
             <Border
+                MouseDown="ChangeSomeText"
                 CornerRadius="9"
                 BorderThickness="1 1 1 1"
                 Margin="5 50 5 5">
@@ -82,6 +135,8 @@
                         ShadowDepth="3" />
                 </Border.Effect>
                 <Label
+                    Foreground="White"
+                    x:Name="labelChange"
                     HorizontalContentAlignment="Center"
                     Padding="1 1 1 1"
                     FontSize="16"
@@ -92,7 +147,7 @@
                 </Label>
             </Border>
             <Border
-                MouseDown="openAddSomeText"
+                MouseDown="AddSomeText"
                 CornerRadius="9"
                 BorderThickness="1 1 1 1"
                 Margin="5 5 5 5">
@@ -103,6 +158,7 @@
                         ShadowDepth="3" />
                 </Border.Effect>
                 <Label
+                    Foreground="White"
                     HorizontalContentAlignment="Center"
                     Padding="1 1 1 1"
                     FontSize="16"
@@ -113,6 +169,7 @@
                 </Label>
             </Border>
             <Border
+                MouseDown="DeleteSomeText"
                 CornerRadius="9"
                 BorderThickness="1 1 1 1"
                 Margin="5 5 5 5">
@@ -123,6 +180,7 @@
                         ShadowDepth="3" />
                 </Border.Effect>
                 <Label
+                    Foreground="White"
                     HorizontalContentAlignment="Center"
                     Padding="1 1 1 1"
                     FontSize="16"
@@ -132,7 +190,59 @@
                     Content="Удалить">
                 </Label>
             </Border>
+            <Border
+                MouseDown="UpdateSomeText"
+                CornerRadius="9"
+                BorderThickness="1 1 1 1"
+                Margin="5 5 5 5">
+                <Border.Effect>
+                    <DropShadowEffect 
+                        BlurRadius="5"
+                        Opacity=".5"
+                        ShadowDepth="3" />
+                </Border.Effect>
+                <Label
+                    Foreground="White"
+                    HorizontalContentAlignment="Center"
+                    Padding="1 1 1 1"
+                    FontSize="16"
+                    Height="20"
+                    Width="150"
+                    Background="Gray"
+                    Content="Обновить">
+                </Label>
+            </Border>
+            <Border
+                MouseDown="FindSomeText"
+                CornerRadius="9"
+                BorderThickness="1 1 1 1"
+                Margin="5 5 5 5">
+                <Border.Effect>
+                    <DropShadowEffect 
+                        BlurRadius="5"
+                        Opacity=".5"
+                        ShadowDepth="3" />
+                </Border.Effect>
+                <Label
+                    Foreground="White"
+                    HorizontalContentAlignment="Center"
+                    Padding="1 1 1 1"
+                    FontSize="16"
+                    Height="20"
+                    Width="150"
+                    Background="Gray"
+                    Content="Поиск">
+                </Label>
+            </Border>
+            
         </StackPanel>
-        <Label x:Name="DownTray" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Background="AliceBlue"></Label>
+        <Label 
+            x:Name="DownTray" 
+            Grid.Row="2" 
+            Grid.Column="0" 
+            Grid.ColumnSpan="3" 
+            Background="AliceBlue"
+            Padding="1 1 1 1">
+        </Label>
     </Grid>
 </Window>
