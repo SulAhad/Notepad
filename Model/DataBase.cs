@@ -6,13 +6,14 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Notepad
+namespace Notepad.Model
 {
     class DataBase : INotifyPropertyChanged
     {
         private int id;
         private string someText;
         private string date;
+        private byte[] image;
 
         public int Id
         {
@@ -41,8 +42,16 @@ namespace Notepad
                 OnPropertyChanged("Date");
             }
         }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
+        public byte[] Image
+        {
+            get { return image; }
+            set
+            {
+                image = value;
+                OnPropertyChanged("Date");
+            }
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")
         {
             if (PropertyChanged != null)
